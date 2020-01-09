@@ -2,7 +2,7 @@ class AdministratorsController < ApplicationController
 
   def index
     admins = Administrator.all
-    render json: admins
+    render json: admins, include: :events
   end
 
   def create
