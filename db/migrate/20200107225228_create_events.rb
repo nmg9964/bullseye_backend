@@ -6,7 +6,7 @@ class CreateEvents < ActiveRecord::Migration[6.0]
       t.string :email_address
       t.integer :phone_number
       t.integer :guest_count
-      t.string :message, default: nil
+      t.string :message
       t.references :administrator, null: false, foreign_key: true
 
       t.timestamps
