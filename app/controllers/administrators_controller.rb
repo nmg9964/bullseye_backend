@@ -7,7 +7,7 @@ class AdministratorsController < ApplicationController
 
   def create
     admin = Administrator.find_or_create_by(username: params[:username], password: params[:password])
-    render json: admin
+    render json: admin, include: :events
   end
 
 end
