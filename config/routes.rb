@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       resources :events
       resources :administrators
       post '/login', to: 'administrators#login'
-      post '/admin', to: 'administrators#show'
+      get '/current_admin', to: 'administrators#authorize'
     end
   end
 end

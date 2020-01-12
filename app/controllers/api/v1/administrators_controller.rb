@@ -5,23 +5,27 @@ class Api::V1::AdministratorsController < ApplicationController
     render json: admins, include: :events
   end
 
-  def show
-    # admin = Administrator.find_by(:id)
-    # render json: admin, include: :events
-  end
-
   def login
     admin = Administrator.find_by(username: params[:username])
     if admin && admin.authenticate(params[:password])
-      render json: admin, include: :events
+      token = JWT.encode({ admin_id: admin.id }, 'secretkey', 'HS256')
+      render json: { id: admin.id, username: admin.username, events: admin.events, token: token }
     else
       render json: { error: 'invalid credentials' }, status: 401
     end
   end
 
-  def create
-    # admin = Administrator.find_or_create_by(username: params[:username], password: params[:password])
-    # render json: admin, include: :events
+  def authorize
+    token = request.headers['Authorization'].split(' ')[1]
+    decode = JWT.decode token, 'secretkey', true, { algorithm: 'HS256' }
+    admin_id = decode[0]['admin_id']
+    admin = Administrator.find(admin_id)
+
+    if (admin)
+      render json: { id: admin.id, username: admin.username, events: admin.events, token: token }
+    else
+      render json: { error: 'Invalid Credentials' }, status: 401
+    end
   end
 
 end
