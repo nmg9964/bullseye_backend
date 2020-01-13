@@ -9,4 +9,15 @@ class Api::V1::EventsController < ApplicationController
     render json: event
   end
 
+  def create
+    event = Event.create(event_params)
+    render json: event
+  end
+
+
+  private
+  def event_params
+    params.require(:event).permit(:date, :first_name, :last_name, :email_address, :phone_number, :guest_count, :message, :administrator_id)
+  end
+
 end
