@@ -14,6 +14,12 @@ class Api::V1::EventsController < ApplicationController
     render json: event
   end
 
+  def update
+    event = Event.find(params[:id])
+    event.update(event_params)
+    render json: event
+  end
+
   def destroy
     Event.delete(params[:id])
   end
