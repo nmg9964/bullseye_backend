@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       resources :administrators
       post '/login', to: 'administrators#login'
       get '/current_admin', to: 'administrators#authorize'
-      # get '/available_times/:date', to: 'events#find_times'
+      get '/available_times/:date', to: 'events#find_times'
     end
   end
 end
