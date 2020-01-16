@@ -34,30 +34,30 @@ class Api::V1::EventsController < ApplicationController
 
   def find_times
     events = Event.where(date: params[:date])
-    weekday_times = [ '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM']
-    weekend_times = weekday_times + ['9:00 PM', '10:00 PM', '11:00 PM', '12:00 AM']
+    events_date = Date.parse(params[:date])
     times = []
     available_times = []
-
-    events_date = Date.parse(params[:date])
-
-    if events_date.wday == 5 || events_date.wday == 6
-      times = weekend_times 
-    else
-      times = weekday_times
-    end
-    
-    times.each do |time|
-      events_per_hour = events.filter { |event| event.time == time }
-      available_times.push(time) if events_per_hour.size < 7
-    end
-
+    times = set_times(events_date, times)
+    set_available_times(times, events, available_times)
     render json: available_times
   end
 
   private
   def event_params
     params.require(:event).permit(:date, :time, :first_name, :last_name, :email_address, :phone_number, :guest_count, :message, :administrator_id)
+  end
+
+  def set_times(date, times)
+    weekday_times = [ '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM']
+    weekend_times = weekday_times + ['9:00 PM', '10:00 PM', '11:00 PM', '12:00 AM']
+    date.wday == 5 || date.wday == 6 ? weekend_times : weekday_times
+  end
+
+  def set_available_times(times, events, available_times)
+    times.each do |time|
+      events_per_hour = events.filter { |event| event.time == time }
+      available_times.push(time) if events_per_hour.size < 7
+    end
   end
 
 end
