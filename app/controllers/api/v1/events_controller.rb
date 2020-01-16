@@ -10,14 +10,22 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def create
-    event = Event.create(event_params)
-    render json: event
+    event = Event.new(event_params)
+    if event.valid?
+      event.save
+      render json: event
+    else
+      render json: { error: '500'}
+    end
   end
 
   def update
     event = Event.find(params[:id])
-    event.update(event_params)
-    render json: event
+    if event.update(event_params)
+      render json: event
+    else
+      render json: { error: '500' }
+    end
   end
 
   def destroy
@@ -25,7 +33,7 @@ class Api::V1::EventsController < ApplicationController
   end
 
   # def find_times
-  #   events = Event.where(date: params[:date])
+  #   events = Event.where(date: params[:date)
   #   weekday_times = [ '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM']
   #   weekend_times = weekday_times.concat(['9:00 PM', '10:00 PM', '11:00 PM', '12:00 AM'])
   #   times = []
