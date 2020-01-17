@@ -14,6 +14,7 @@ class Api::V1::EventsController < ApplicationController
     if event.valid?
       event.save
       render json: event
+      ClientMailer.confirmation_email(event).deliver_now
     else
       render json: { error: '500'}
     end
