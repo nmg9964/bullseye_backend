@@ -11,10 +11,12 @@ class Api::V1::EventsController < ApplicationController
 
   def create
     event = Event.new(event_params)
+    admin = event.administrator
     if event.valid?
       event.save
       render json: event
       ClientMailer.confirmation_email(event).deliver_now
+      AdminMailer.notification_message(admin).deliver_now
     else
       render json: { error: '500'}
     end

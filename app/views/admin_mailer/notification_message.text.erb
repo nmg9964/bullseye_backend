@@ -1,0 +1,13 @@
+Hello, <%= @admin.username %>!
+===============================================
+A new axe-throwing session was successfully booked at BullsEye Axe Lounge! The booking details are the following:
+
+Name: <%= @event.first_name + ' ' + @event.last_name %>
+Date: <%= @event.date %>
+Time: <%= @event.time %>
+Guest Count: <%= @event.guest_count %>
+Phone Number: <%= @event.phone_number %>
+E-mail Address: <%= @event.email_address %>
+Message: <%= @event.message if @event.message %>
+
+This session may be updated or canceled by logging into your account at http://localhost:3000/login.
