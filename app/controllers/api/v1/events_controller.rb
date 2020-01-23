@@ -51,9 +51,9 @@ class Api::V1::EventsController < ApplicationController
   end
 
   def set_times(date, times)
-    weekday_times = [ '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM']
-    weekend_times = weekday_times + ['9:00 PM', '10:00 PM', '11:00 PM', '12:00 AM']
-    date.wday == 5 || date.wday == 6 ? weekend_times : weekday_times
+    weekday_times = ['12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM', '9:00 PM']
+    weekend_times = weekday_times + ['10:00 PM', '11:00 PM', '12:00 AM']
+    date.wday >= 5 ? weekend_times : weekday_times
   end
 
   def set_available_times(times, events, available_times)
